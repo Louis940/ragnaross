@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Louis Ross">
+  <header class="px-6 pb-6 pt-10 text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-base-content md:text-5xl">
+      Welcome, mortals.
+    </h1>
+  </header>
+  <main class="mx-auto max-w-3xl px-6 pb-16">
+    <p class="mb-8 text-lg text-base-content/80">This site belongs to Louis Ross</p>
+
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="card border border-base-300 bg-base-200 shadow-sm">
+        <div class="card-body p-6">
+          <h2 class="card-title text-lg">Professionals</h2>
+          <p class="text-sm leading-relaxed text-base-content/70">
+            Work related subjects, perhaps a CV, less fun but necessary tech projects (ie for my own
+            development, or education), and my other big job — rants (<em>ahem</em> articles) about
+            parenting
+          </p>
+          <div class="card-actions mt-2 justify-start">
+            <span class="badge badge-ghost font-semibold">Read more — coming soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border border-base-300 bg-base-200 shadow-sm">
+        <div class="card-body p-6">
+          <h2 class="card-title text-lg">Unprofessionals</h2>
+          <p class="text-sm leading-relaxed text-base-content/70">
+            My hobbies and interests, ranging from what I eat and drink to fun tech projects and games
+          </p>
+          <div class="card-actions mt-2 justify-start">
+            <a class="btn btn-primary btn-sm" href="/unprofessionals">Read more</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

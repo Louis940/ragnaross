@@ -1,0 +1,20 @@
+{
+  "generator": "Framer (SSR + hydration)",
+  "fonts": ["Inter via Google Fonts / gstatic woff2"],
+  "layout": {
+    "homepage": "Centered hero with h1 welcome, two columns/sections (Professionals, Unprofessionals), footer with copyright and social links",
+    "inner_pages": "Single column content; hobbies index uses linked cards to subsections"
+  },
+  "information_architecture": {
+    "/": "Landing",
+    "/unprofessionals": "Hobbies hub — links to coffee, food, books, beer, games, etc.",
+    "/unprofessionals/coffee": "Long-form coffee tasting notes (primary text content)",
+    "/unprofessionals/beer": "Placeholder / thin content in search index",
+    "/unprofessionals/books": "Placeholder",
+    "/unprofessionals/food-ext": "Placeholder",
+    "/unprofessionals/food-int": "Placeholder",
+    "/unprofessionals/food-int/baking": "Placeholder"
+  },
+  "routing_note": "Professionals section appears on homepage copy but has no dedicated route in Framer search index (Read More may be non-linked or WIP).",
+  "rebuild_strategy": "Static Astro site with shared layout, Inter font, light gray typography on white; content collections for markdown pages matching existing paths."
+}

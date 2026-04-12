@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+/** Hobby list order and dates from the mirrored site; links only to published routes. */
+const items = [
+  { label: "Coffee", href: "/unprofessionals/coffee", date: "26 Nov 2024" },
+  { label: "My Food", href: "/unprofessionals/food-int", date: "3 Jan 2026" },
+  { label: "Photography", href: null, date: "3 Jan 2026" },
+  { label: "Music, Film, TV, Books", href: "/unprofessionals/books", date: "8 Oct 2024" },
+  { label: "Not My Food", href: "/unprofessionals/food-ext", date: "3 Jan 2026" },
+  { label: "Games", href: null, date: "3 Jan 2026" },
+  { label: "Other tidbits", href: "/unprofessionals/food-int/baking", date: "16 Sept 2024" },
+] as const;
+---
+
+<BaseLayout title="Louis Ross — Hobbies">
+  <main class="mx-auto max-w-3xl px-6 py-8">
+    <a class="link link-primary link-hover mb-6 inline-block text-sm" href="/">← Home</a>
+    <h1 class="mb-6 text-3xl font-bold tracking-tight text-base-content">Hobbies</h1>
+    <ul
+      class="divide-y divide-base-300 overflow-hidden rounded-lg border border-base-300 bg-base-100"
+    >
+      {
+        items.map(({ label, href, date }) => (
+          <li class="flex items-baseline justify-between gap-4 px-4 py-3 transition-colors hover:bg-base-200/60">
+            {href ? (
+              <a class="link font-semibold text-base-content" href={href}>
+                {label}
+              </a>
+            ) : (
+              <span class="font-medium text-base-content/70">{label}</span>
+            )}
+            <time class="whitespace-nowrap text-sm text-base-content/60">{date}</time>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-8 text-sm text-base-content/70">
+      Also: <a class="link link-primary link-hover" href="/unprofessionals/beer">Beer</a>
+    </p>
+  </main>
+</BaseLayout>

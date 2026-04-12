@@ -1,0 +1,32 @@
+URL mapping (Framer live site → Astro static build)
+====================================================
+/                              → site/src/pages/index.astro
+/unprofessionals               → site/src/pages/unprofessionals/index.astro
+/unprofessionals/coffee        → site/src/content/docs/unprofessionals/coffee.md
+/unprofessionals/beer          → site/src/content/docs/unprofessionals/beer.md
+/unprofessionals/books         → site/src/content/docs/unprofessionals/books.md
+/unprofessionals/food-ext      → site/src/content/docs/unprofessionals/food-ext.md
+/unprofessionals/food-int      → site/src/content/docs/unprofessionals/food-int.md
+/unprofessionals/food-int/baking → site/src/content/docs/unprofessionals/food-int/baking.md
+
+Mirror and discovery
+====================
+- Raw HTML: mirror/ragnaross.co.uk/
+- Crawl log: mirror/inventory.jsonl
+- Framer route list (from search index meta): mirror/route_manifest.json
+- Stack notes: mirror/site_analysis.json
+
+Footer links (Instagram, Email) are href="#" placeholders — the live Framer HTML did not
+embed those URLs in crawlable markup. Set real destinations in site/src/layouts/BaseLayout.astro.
+
+UI stack (open source)
+======================
+- Tailwind CSS (MIT): utility styling
+- DaisyUI (MIT): card, button, footer, badge, link patterns — https://daisyui.com/
+- @tailwindcss/typography (MIT): markdown “prose” on topic pages
+
+Build (no local Node required)
+==============================
+docker run --rm -v "$(pwd)/site:/app" -w /app node:22-bookworm-slim sh -c "npm install && npm run build"
+
+Output: site/dist/

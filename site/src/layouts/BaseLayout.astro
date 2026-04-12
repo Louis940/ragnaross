@@ -1,0 +1,38 @@
+---
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "The personal website of one Louis Ross, of Cambridge, UK" } =
+  Astro.props;
+---
+
+<!doctype html>
+<html lang="en-GB" data-theme="light" class="font-sans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body class="flex min-h-dvh flex-col bg-base-100 text-base-content antialiased">
+    <div class="flex flex-1 flex-col">
+      <slot />
+    </div>
+    <footer class="footer footer-center border-t border-base-300 bg-base-200 p-10 text-base-content">
+      <aside>
+        <p class="text-sm opacity-80">© Louis Ross, 2024</p>
+        <nav class="mt-3 flex flex-wrap justify-center gap-4" aria-label="Contact">
+          <a class="link link-primary link-hover" href="#">Instagram</a>
+          <a class="link link-primary link-hover" href="#">Email</a>
+        </nav>
+      </aside>
+    </footer>
+  </body>
+</html>
