@@ -5,6 +5,22 @@ description: "Coffee tasting notes and brewing experiments."
 
 # 2026
 
+## Rum Baba - Kaleidoscope 3.0
+### Varietal: Castillo, Bourbon Aji
+### Area: Huila, Colombia
+### Process: Washed Experimental & CoFermentation
+<image src="/assets/images/coffee/rum-baba-kaleidoscope-3.0.jpg" alt="Rum Baba Kaleidoscope 3.0" width="500" height="500" />
+
+Weird as anything, possibly the strangest smelling coffee I've bought. Innovative stuff from Rum Baba, certainly won't be the last time I buy from them. Perfect for a hot summer day as a high extract aeropress over ice with tonic. 4/5 for that, possibly dropping to a 3 for any other application.
+
+## People Possession - Blueberry Pie Magic
+### Process:
+### Altitude:
+### Varietal:
+<image src="/assets/images/coffee/people-possession-blueberry-pie-magic.jpg" alt="People Possession Blueberry Pie Magic" width="500" height="500" />
+
+5/5 - Powerfully fruity, great juicyness. The blueberry is even a smack you round the face flavour bomb as an iced pourover, which you certainly don't see as often 
+
 ## Kerb Kollective - El Diviso Nestor Lasso, Colombia
 ### Process: Natural
 ### Altitude: 1870 - 2000m
