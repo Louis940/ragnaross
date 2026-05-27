@@ -21,12 +21,20 @@ embed those URLs in crawlable markup. Set real destinations in site/src/layouts/
 
 UI stack (open source)
 ======================
-- Tailwind CSS (MIT): utility styling
-- DaisyUI (MIT): card, button, footer, badge, link patterns — https://daisyui.com/
+- Tailwind CSS 4 via @tailwindcss/vite (MIT): utility styling — src/styles/global.css
+- DaisyUI 5 (MIT): card, button, footer, badge, link patterns — https://daisyui.com/
 - @tailwindcss/typography (MIT): markdown “prose” on topic pages
 
-Build (no local Node required)
-==============================
-docker run --rm -v "$(pwd)/site:/app" -w /app node:22-bookworm-slim sh -c "npm install && npm run build"
+Build (requires Node >= 22.12; use deploy/build.sh on the Pi — low-RAM safe)
+=============================================================================
+./deploy/build.sh
+
+Stack uses Tailwind CSS 4 + DaisyUI 5 via @tailwindcss/vite (not @astrojs/tailwind).
+On a ~1GB Pi, avoid bare "npm install" in site/ — it may OOM. build.sh uses
+package-lock-only then npm ci with a capped Node heap.
+
+Alternative (Docker, if npm still OOMs):
+docker run --rm -v "$(pwd)/site:/app" -w /app node:22-bookworm-slim \
+  sh -c "npm ci && npm run build"
 
 Output: site/dist/
