@@ -1,0 +1,161 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import {
+  articleSlug,
+  getArticlesForSection,
+  getChildSections,
+  groupArticlesByLocation,
+  groupArticlesByYear,
+  sectionUrlPath,
+} from "../../../lib/content";
+import ArticleTile from "../../../components/ArticleTile.astro";
+import SectionTile from "../../../components/SectionTile.astro";
+
+export async function getStaticPaths() {
+  const sections = await getCollection("sections", ({ id }) => id.startsWith("unprofessionals/"));
+  return sections.map((section) => ({
+    params: { slug: sectionUrlPath(section) },
+    props: { section },
+  }));
+}
+
+const { section } = Astro.props;
+const { Content } = await render(section);
+
+const allSections = await getCollection("sections", ({ id }) => id.startsWith("unprofessionals/"));
+const allArticles = await getCollection("articles", ({ data }) =>
+  data.section.startsWith("unprofessionals/"),
+);
+
+const childSections = getChildSections(allSections, section.id);
+const articles = getArticlesForSection(allArticles, section.id);
+const groupedArticles =
+  section.data.groupBy === "year"
+    ? groupArticlesByYear(articles)
+    : section.data.groupBy === "location"
+      ? groupArticlesByLocation(
+          articles,
+          section.data.locationIntros ? Object.keys(section.data.locationIntros) : [],
+        )
+      : null;
+const groupIntros =
+  section.data.groupBy === "year"
+    ? section.data.yearIntros
+    : section.data.groupBy === "location"
+      ? section.data.locationIntros
+      : undefined;
+
+const parentId = section.id.includes("/")
+  ? section.id.replace(/\/[^/]+$/, "")
+  : null;
+const parentSection = parentId
+  ? allSections.find((entry) => entry.id === parentId)
+  : null;
+
+const title = `${section.data.title} — Louis Ross`;
+---
+
+<BaseLayout title={title} description={section.data.description}>
+  <main class="mx-auto max-w-3xl px-6 py-8">
+    <a class="link link-primary link-hover mb-6 inline-block text-sm" href="/unprofessionals"
+      >← Hobbies</a
+    >
+    {
+      parentSection && (
+        <a
+          class="link link-primary link-hover mb-2 inline-block text-sm"
+          href={`/unprofessionals/${sectionUrlPath(parentSection)}`}
+        >
+          ← {parentSection.data.title}
+        </a>
+      )
+    }
+
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold tracking-tight text-base-content">{section.data.title}</h1>
+      {
+        section.body && (
+          <div
+            class="prose prose-neutral mt-4 max-w-none prose-p:leading-relaxed prose-p:text-base-content/80"
+          >
+            <Content />
+          </div>
+        )
+      }
+    </header>
+
+    {
+      childSections.length > 0 && (
+        <section class="mb-10">
+          <h2 class="mb-4 text-lg font-semibold text-base-content">Sections</h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            {
+              childSections.map((child) => (
+                <SectionTile
+                  section={child}
+                  href={`/unprofessionals/${sectionUrlPath(child)}`}
+                />
+              ))
+            }
+          </div>
+        </section>
+      )
+    }
+
+    {
+      groupedArticles && groupedArticles.size > 0 && (
+        <div class="space-y-10">
+          {
+            [...groupedArticles.entries()].map(([group, groupArticles]) => (
+              <section>
+                <h2 class="mb-2 text-xl font-bold text-base-content">{group}</h2>
+                {
+                  groupIntros?.[String(group)] && (
+                    <p class="mb-4 text-sm leading-relaxed text-base-content/70">
+                      {groupIntros[String(group)]}
+                    </p>
+                  )
+                }
+                <div class="grid gap-4 sm:grid-cols-2">
+                  {
+                    groupArticles.map((article) => (
+                      <ArticleTile
+                        article={article}
+                        href={`/unprofessionals/${sectionUrlPath(section)}/${articleSlug(article)}`}
+                      />
+                    ))
+                  }
+                </div>
+              </section>
+            ))
+          }
+        </div>
+      )
+    }
+
+    {
+      !groupedArticles && articles.length > 0 && (
+        <section>
+          <h2 class="mb-4 text-lg font-semibold text-base-content">Articles</h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            {
+              articles.map((article) => (
+                <ArticleTile
+                  article={article}
+                  href={`/unprofessionals/${sectionUrlPath(section)}/${articleSlug(article)}`}
+                />
+              ))
+            }
+          </div>
+        </section>
+      )
+    }
+
+    {
+      childSections.length === 0 && articles.length === 0 && (
+        <p class="text-sm text-base-content/60">No articles yet.</p>
+      )
+    }
+  </main>
+</BaseLayout>

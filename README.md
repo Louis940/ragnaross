@@ -40,3 +40,7 @@ npm run build  # → dist/
 ```
 
 See `MIGRATION.txt` for URL mapping from the original Framer site.
+
+## Future: visual CMS (optional)
+
+Content is markdown in `site/src/content/` — no CMS is installed. If in-browser editing becomes useful later, [Keystatic](https://keystatic.com/) is the best fit for this Astro setup: it adds a local admin UI in dev (`@keystatic/astro` + `keystatic.config.ts` mapping the existing `sections` and `articles` collections), still stores everything as Git-backed markdown, and needs no extra runtime on the Pi. Alternative: [Decap CMS](https://decapcms.org/) for editing via `/admin` on the deployed site (more setup, GitHub auth). Use one or the other, not both.

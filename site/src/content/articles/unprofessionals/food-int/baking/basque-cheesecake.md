@@ -1,13 +1,8 @@
 ---
-title: "Baking"
-description: "Baking notes — content to be added."
+title: "Basque Cheesecake"
+section: "unprofessionals/food-int/baking"
+description: "My solid recipe, and go to easy dessert if you want to impress."
 ---
-
-# Baking
-
-This section is a placeholder for this URL.
-
-## Basque Cheesecake
 
 My solid recipe, and go to easy dessert if you want to impress.
 

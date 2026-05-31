@@ -1,11 +1,8 @@
 ---
-title: "Not My Food"
-description: "Eating out and external food adventures — content to be added."
+title: "Restaurants"
+section: "unprofessionals/food-ext"
+description: "An absolutely class veggie Indian restaurant. One of my favourite places in Leeds (and now Manchester too!). I always make a visit if I'm up that way as the food is delicious. Favourite dishes are the"
 ---
-
-# Food from other sources
-
-## Restaurants
 
 ### Cambridgeshire
 
@@ -42,7 +39,3 @@ Very tasty burgers in this quality Norwich spot, and good chicken options too. O
 #### BAB NQ
 
 Manny on the map - great upmarket kebab shop. Very good options, and well dressed kebabs.
-
-## Food Trucks
-
-### Geurilla Kitchen

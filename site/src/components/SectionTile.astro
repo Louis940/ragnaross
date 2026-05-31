@@ -1,0 +1,22 @@
+---
+interface Props {
+  section: import("astro:content").CollectionEntry<"sections">;
+  href: string;
+}
+
+const { section, href } = Astro.props;
+---
+
+<a
+  href={href}
+  class="card border border-base-300 bg-base-100 shadow-sm transition-colors hover:bg-base-200/60"
+>
+  <div class="card-body gap-2 p-5">
+    <h2 class="card-title text-base">{section.data.title}</h2>
+    {
+      section.data.description && (
+        <p class="text-sm leading-relaxed text-base-content/70">{section.data.description}</p>
+      )
+    }
+  </div>
+</a>

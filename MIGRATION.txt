@@ -2,12 +2,18 @@ URL mapping (Framer live site → Astro static build)
 ====================================================
 /                              → site/src/pages/index.astro
 /unprofessionals               → site/src/pages/unprofessionals/index.astro
-/unprofessionals/coffee        → site/src/content/docs/unprofessionals/coffee.md
-/unprofessionals/beer          → site/src/content/docs/unprofessionals/beer.md
-/unprofessionals/books         → site/src/content/docs/unprofessionals/books.md
-/unprofessionals/food-ext      → site/src/content/docs/unprofessionals/food-ext.md
-/unprofessionals/food-int      → site/src/content/docs/unprofessionals/food-int.md
-/unprofessionals/food-int/baking → site/src/content/docs/unprofessionals/food-int/baking.md
+/unprofessionals/{section}     → site/src/content/sections/unprofessionals/{section}.md
+                                 rendered by site/src/pages/unprofessionals/[...slug]/index.astro
+/unprofessionals/{section}/{article}
+                               → site/src/content/articles/unprofessionals/{section}/{article}.md
+                                 rendered by site/src/pages/unprofessionals/[...slug]/[article].astro
+
+Examples:
+/unprofessionals/coffee        → section hub (article tiles grouped by year)
+/unprofessionals/coffee/rum-baba-kaleidoscope-3-0 → single coffee article
+/unprofessionals/food-int      → section hub (links to baking sub-section)
+/unprofessionals/food-int/baking → sub-section hub
+/unprofessionals/food-int/baking/basque-cheesecake → recipe article
 
 Mirror and discovery
 ====================
