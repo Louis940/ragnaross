@@ -11,7 +11,7 @@ cd /var/www/site/ragnaross
 sudo ./deploy/setup-host.sh
 ```
 
-Then open `http://192.168.1.94/` on your LAN (or your Pi’s current IP from `hostname -I`).
+Then open `http://<pi-lan-ip>/` on your LAN.
 
 **Redeploy** after editing content or code:
 
@@ -20,12 +20,25 @@ Then open `http://192.168.1.94/` on your LAN (or your Pi’s current IP from `ho
 sudo systemctl reload nginx
 ```
 
-**HTTPS** (once DNS for `ragnaross.co.uk` points at this machine):
+Public HTTPS uses **Cloudflare Tunnel** (no certbot on the Pi). See [Public access](#public-access-route-53--s3--cloudflare-tunnel) below.
+
+There is a Cloudflare Origin Certificate on the Pi, this is used to provide HTTPS between the Pi and the Tunnel itself, it uses Strict HTTP on Cloudflare.
+
+### Ongoing deploy
+
+Unchanged — tunnel stays up; rebuild and reload nginx:
 
 ```bash
-sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d ragnaross.co.uk -d www.ragnaross.co.uk
+./deploy/build.sh && sudo systemctl reload nginx
 ```
+
+### Rough monthly cost
+
+| Service | Cost |
+|---------|------|
+| Route 53 hosted zone | ~£0.40 |
+| Cloudflare Tunnel | £0 |
+| Pi at home | electricity only |
 
 ## Development
 
@@ -41,6 +54,8 @@ npm run build  # → dist/
 
 See `MIGRATION.txt` for URL mapping from the original Framer site.
 
-## Future: visual CMS (optional)
+## Future: visual CMS?
 
-Content is markdown in `site/src/content/` — no CMS is installed. If in-browser editing becomes useful later, [Keystatic](https://keystatic.com/) is the best fit for this Astro setup: it adds a local admin UI in dev (`@keystatic/astro` + `keystatic.config.ts` mapping the existing `sections` and `articles` collections), still stores everything as Git-backed markdown, and needs no extra runtime on the Pi. Alternative: [Decap CMS](https://decapcms.org/) for editing via `/admin` on the deployed site (more setup, GitHub auth). Use one or the other, not both.
+Content is markdown in `site/src/content/` — no CMS is installed. If in-browser editing becomes useful later, [Keystatic](https://keystatic.com/) is the best fit for this Astro setup: it adds a local admin UI in dev (`@keystatic/astro` + `keystatic.config.ts` mapping the existing `sections` and `articles` collections), still stores everything as Git-backed markdown, and needs no extra runtime on the Pi. 
+
+Alternative: [Decap CMS](https://decapcms.org/) for editing via `/admin` on the deployed site (more setup, GitHub auth).
