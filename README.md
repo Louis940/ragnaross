@@ -20,6 +20,35 @@ Then open `http://<pi-lan-ip>/` on your LAN.
 sudo systemctl reload nginx
 ```
 
+### Media assets (Pi)
+
+Article images use URLs like `/assets/images/coffee/...`. They live outside git on disk and are linked into the Astro `public/` folder so builds copy them into `site/dist/`.
+
+**One-time setup on the Pi:**
+
+```bash
+mkdir -p /var/www/media/ragnaross/assets/images/{coffee,food-ext}
+cd /var/www/site/ragnaross/site/public
+rm -rf assets   # only if empty or you have moved any files out
+ln -s /var/www/media/ragnaross/assets assets
+```
+
+Add images under `/var/www/media/ragnaross/assets/` using the same paths as in markdown, e.g.:
+
+```text
+/var/www/media/ragnaross/assets/images/coffee/rum-baba-kaleidoscope-3.0.jpg
+/var/www/media/ragnaross/assets/images/food-ext/margarets.jpg
+```
+
+Rebuild so Astro copies them into `dist/`:
+
+```bash
+./deploy/build.sh
+ls site/dist/assets/images/coffee/ | head
+```
+
+Do not commit `site/public/assets` — it is gitignored. Re-run the `ln -s` if a pull recreates `public/assets` as a normal directory.
+
 Public HTTPS uses **Cloudflare Tunnel** (no certbot on the Pi). See [Public access](#public-access-route-53--s3--cloudflare-tunnel) below.
 
 There is a Cloudflare Origin Certificate on the Pi, this is used to provide HTTPS between the Pi and the Tunnel itself, it uses Strict HTTP on Cloudflare.

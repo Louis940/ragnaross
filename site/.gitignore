@@ -1,6 +1,9 @@
 node_modules/
 dist/
 .astro/
+
+# Large images — symlinked on the Pi (see README)
+public/assets
 .env
 .env.*
 *.pem
