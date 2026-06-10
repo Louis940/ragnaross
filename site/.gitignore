@@ -9,3 +9,4 @@ public/assets
 *.pem
 .cloudflared/
 .vscode/
+.claude/
