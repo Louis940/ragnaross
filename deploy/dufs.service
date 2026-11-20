@@ -1,0 +1,29 @@
+# dufs: web upload/browse for site media, exposed via Cloudflare Tunnel
+# (files.ragnaross.co.uk → http://localhost:5000, behind Cloudflare Access).
+#
+# Install:
+#   sudo install -m 644 deploy/dufs.service /etc/systemd/system/dufs.service
+#   sudo systemctl daemon-reload && sudo systemctl enable --now dufs
+#
+# Needs /etc/dufs/auth.yaml (root:www-data, 640):
+#   auth:
+#     - <user>:<password>@/:rw
+
+[Unit]
+Description=dufs file server for ragnaross assets
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=www-data
+Group=www-data
+# Uploaded files come out group-writable and readable by nginx
+UMask=0002
+ExecStart=/usr/local/bin/dufs /var/www/media/ragnaross/assets \
+  -b 127.0.0.1 -p 5000 --allow-upload --allow-delete \
+  --config /etc/dufs/auth.yaml
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
