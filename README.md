@@ -22,32 +22,41 @@ sudo systemctl reload nginx
 
 ### Media assets (Pi)
 
-Article images use URLs like `/assets/images/coffee/...`. They live outside git on disk and are linked into the Astro `public/` folder so builds copy them into `site/dist/`.
+Article images use URLs like `/assets/images/coffee/...`. They live outside git and outside the Astro build, in `/var/www/media/ragnaross/assets/`. nginx serves `/assets/` straight from that folder (see `deploy/nginx-ragnaross.conf`), so new or replaced images are live immediately — **no rebuild needed**.
+
+Images are uploaded through [dufs](https://github.com/sigoden/dufs) at `https://files.ragnaross.co.uk`, which writes into the same folder.
 
 **One-time setup on the Pi:**
 
 ```bash
-mkdir -p /var/www/media/ragnaross/assets/images/{coffee,food-ext}
-cd /var/www/site/ragnaross/site/public
-rm -rf assets   # only if empty or you have moved any files out
-ln -s /var/www/media/ragnaross/assets assets
+# Media folder: www-data owns it (dufs writes, nginx reads); setgid keeps the group on new dirs
+sudo mkdir -p /var/www/media/ragnaross/assets/images/{coffee,food-ext}
+sudo chown -R www-data:www-data /var/www/media/ragnaross
+sudo chmod -R 2775 /var/www/media/ragnaross
+sudo usermod -aG www-data "$USER"   # optional: lets you add files over SSH too (re-login)
+
+# dufs credentials (YAML: the "-" goes before the rule, not before "auth:")
+sudo mkdir -p /etc/dufs
+sudoedit /etc/dufs/auth.yaml
+#   auth:
+#     - <user>:<password>@/:rw
+sudo chown root:www-data /etc/dufs/auth.yaml
+sudo chmod 640 /etc/dufs/auth.yaml
+
+# dufs service (listens on 127.0.0.1:5000 only)
+sudo install -m 644 deploy/dufs.service /etc/systemd/system/dufs.service
+sudo systemctl daemon-reload && sudo systemctl enable --now dufs
+curl -I http://127.0.0.1:5000/   # expect 401
 ```
 
-Add images under `/var/www/media/ragnaross/assets/` using the same paths as in markdown, e.g.:
+Then in the Cloudflare dashboard (the tunnel is token-based, so routes live there, not in a local config):
 
-```text
-/var/www/media/ragnaross/assets/images/coffee/rum-baba-kaleidoscope-3.0.jpg
-/var/www/media/ragnaross/assets/images/food-ext/margarets.jpg
-```
+1. **Zero Trust → Networks → Tunnels →** this tunnel **→ Published application routes → Add**: `files.ragnaross.co.uk` → `HTTP` `localhost:5000`.
+2. **Zero Trust → Access → Applications → Self-hosted**: protect `files.ragnaross.co.uk` with an Allow policy for your email only.
 
-Rebuild so Astro copies them into `dist/`:
+Upload into the same paths the markdown uses, e.g. `images/coffee/rum-baba-kaleidoscope-3.0.jpg` → `https://ragnaross.co.uk/assets/images/coffee/rum-baba-kaleidoscope-3.0.jpg`. If you replace an image under the same name, purge it in Cloudflare (Caching → Purge) or wait out the 7-day cache.
 
-```bash
-./deploy/build.sh
-ls site/dist/assets/images/coffee/ | head
-```
-
-Do not commit `site/public/assets` — it is gitignored. Re-run the `ln -s` if a pull recreates `public/assets` as a normal directory.
+**Local dev:** `npm run dev` doesn't go through nginx, so put copies of any images you want to see in `site/public/assets/` (gitignored). On the Pi, `site/public/assets` should **not** exist — remove the old symlink if it's there, or the images get pointlessly copied into `dist/` on every build.
 
 Public HTTPS uses **Cloudflare Tunnel** (no certbot on the Pi). See [Public access](#public-access-route-53--s3--cloudflare-tunnel) below.
 
